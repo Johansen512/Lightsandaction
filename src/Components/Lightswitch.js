@@ -33,7 +33,7 @@ cursor: pointer;
         fetch("https://192.168.8.100/api/pYM6C8UDfoyukjCyr0gw7t2AovyIB4S-Chl2DEQb/lights/4/state", {
         method: "PUT",
 
-       body:JSON.stringify({"on":light, "sat":254, "bri":{opac},"hue":10000})
+       body:JSON.stringify({"on":light /*, "sat":254, "bri":{opac},"hue":10000*/})
        
      } )
      .then (response => response.json())

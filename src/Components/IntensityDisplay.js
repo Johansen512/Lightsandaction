@@ -1,6 +1,8 @@
 /**@jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
-import {useState, useEffect} from 'react'
+import {useState, useEffect, useCallback} from 'react';
+import {throttle} from 'lodash';
+
 
 
 
@@ -8,17 +10,14 @@ import {useState, useEffect} from 'react'
 
 const IntensityDisplay = ({props}) => {
 
+
   const [bright, setBright] = useState("0");
 
   const [saturation, setSaturation] = useState("0");
 
   const [hue, setHue] = useState("0");
 
-  const [intensity, setIntensity] = useState ("0")
   
-  const [intensity2, setIntensity2] = useState ("0")
-
-  const [intensity3, setIntensity3] = useState ("0")
 
 
   const style= css`
@@ -71,45 +70,33 @@ useEffect(() => {
 
 
 
-function OpacSlider (e){
-console.log (intensity)
-
-setIntensity (e.target.value)
-setBright (parseInt(intensity))
-}
+function OpacSlider (e){ setBright (parseInt(e.target.value))}
 
 console.log (bright)
 
-function saturationSlider (e){
-  console.log (intensity2)
-  
-  setIntensity2 (e.target.value)
-  setSaturation (parseInt(intensity2))
+function saturationSlider (e){ setSaturation (parseInt(e.target.value))
   }
   
   console.log (saturation)
 
 
-  function hueSlider (e){
-    console.log (intensity3)
-    
-    setIntensity3 (e.target.value)
-    setHue (parseInt(intensity3))
+  function hueSlider (e){ setHue (parseInt(e.target.value))
     }
     
     console.log (hue)
-
+    let throttled = useCallback(throttle(OpacSlider, 300),[])
+    console.log(throttled);
     return ( 
        <div css={style}>
          <p>Brightness</p>
       <input css={sliderstyle} type="range" min="0" max="254" 
-      value={intensity} onChange={ OpacSlider }step="1"/>
+      value={bright} onChange={ throttled }step="1"/>
       <p>Saturation</p>
       <input css={sliderstyle} type="range" min="0" max="254" 
-      value={intensity2} onChange={ saturationSlider }step="1"/>
+      value={saturation} onChange={ saturationSlider }step="1"/>
        <p>Hue</p>
       <input css={sliderstyle} type="range" min="0" max="65535" 
-      value={intensity3} onChange={ hueSlider }step="1"/>
+      value={hue} onChange={ hueSlider }step="1"/>
       </div>
       
     );
