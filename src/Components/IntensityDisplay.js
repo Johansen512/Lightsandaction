@@ -17,11 +17,7 @@ const IntensityDisplay = ({props}) => {
 
   const [hue, setHue] = useState("0");
 
-  const [intensity, setIntensity] = useState ("0")
   
-  const [intensity2, setIntensity2] = useState ("0")
-
-  const [intensity3, setIntensity3] = useState ("0")
 
 
   const style= css`
