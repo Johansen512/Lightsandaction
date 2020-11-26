@@ -218,6 +218,8 @@ console.log (farveting)
       value={hueK} onChange={ hueInput }step="1"/>
 </div>
     <div css={colortest}>test</div>
+
+    <SketchPicker />
       </div>
       
     );
