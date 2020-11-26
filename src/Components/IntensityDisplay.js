@@ -4,6 +4,7 @@ import {useState, useEffect, useCallback} from 'react';
 import {throttle} from 'lodash';
 import convert from 'color-convert';
 import {colors} from 'color-name';
+import { SketchPicker } from 'react-color'
 
 
 
@@ -30,6 +31,8 @@ const IntensityDisplay = ({props}) => {
   const [satPercent, setSatPercent] = useState ("0")
 
   const [brightPercent, setBrightPercent] = useState ("0")
+
+  
 
   
 
@@ -67,7 +70,8 @@ const stylecolor= css`
 
 width:150px;
 height:150px;
-background-color:hsl(${hueGrade}, ${satPercent}%,${brightPercent}%); 
+background-color:hsl(${hueK}, ${satPercent}%, ${brightPercent}%);
+
 border:solid 1rem black;
 border-radius:50%;
 font-weight:bold;
@@ -82,6 +86,27 @@ cursor: pointer;
     background-color: darkred;
     }
 
+`;
+
+const colortest= css`
+
+width:150px;
+height:150px;
+border: solid black 2px;
+background-color:hsl(330, 100%, 60%);
+`;
+
+const inputstyle= css`
+display:flex;
+flex-direction: row-reverse;
+padding:1rem;
+margin: 1rem;
+`;
+
+const inputP= css`
+font-size:1rem;
+padding:0.5rem;
+margin: 0.5rem;
 `;
 
 useEffect(() => {
@@ -124,12 +149,14 @@ function saturationSlider (e){ setSaturation (parseInt(e.target.value))
 
 
     function BrightInput (e){ setBrightRaw (parseInt(e.target.value))}
-
+    let BrightConvert = (Math.floor(brightRaw*2.54))
+    console.log (BrightConvert)
 console.log (brightRaw)
 
 function saturationInput (e){ setSatRaw (parseInt(e.target.value))
   }
-  
+  let SatConvert = (Math.floor(satRaw*2.54))
+console.log (SatConvert)
   console.log (satRaw)
 
 
@@ -138,23 +165,31 @@ function saturationInput (e){ setSatRaw (parseInt(e.target.value))
     
     console.log (hueK)
 
-    let HueConvert = (Math.floor(hueK/182))
+    let HueConvert = (Math.floor(hueK*182))
 console.log (HueConvert)
     //let throttled = useCallback(throttle(OpacSlider, 300),[])
     //console.log(throttled);
 
     function newColor () {
-setHueGrade(HueConvert);
+setHueGrade(hueK);
 setBrightPercent(brightRaw);
-setSatPercent(satRaw)}
+setSatPercent(satRaw)
 
-console.log (hueGrade, brightPercent, satPercent)
+setHue (HueConvert);
+setBright(BrightConvert);
+setSaturation(SatConvert);
+
+
+}
+
+console.log (hueGrade, satPercent, brightPercent )
     
 
 /*let farveting = convert.hsl.hsb(69, 120, 14000);
 console.log (farveting)
 
 //(brightRaw, satRaw, hueK)*/
+
 
 
     return ( 
@@ -171,16 +206,18 @@ console.log (farveting)
 
       <button css={stylecolor} onClick = {newColor }>farve</button>
 
-
-      <p>Brightness</p>
-      <input  type="number" min="0" max="254" 
+<div css={inputstyle}>
+      <p css={inputP}>Brightness</p>
+      <input css={inputP}  type="number" min="0" max="100" 
       value={brightRaw} onChange={ BrightInput}step="1"/>
-      <p>Saturation</p>
-      <input  type="number" min="0" max="254" 
+      <p css={inputP}>Saturation</p>
+      <input  css={inputP} type="number" min="0" max="100" 
       value={satRaw} onChange={ saturationInput }step="1"/>
-       <p>Hue</p>
-      <input  type="number" min="0" max="65535" 
+       <p css={inputP} >Hue</p>
+      <input css={inputP} type="number" min="1" max="360" 
       value={hueK} onChange={ hueInput }step="1"/>
+</div>
+    <div css={colortest}>test</div>
       </div>
       
     );
